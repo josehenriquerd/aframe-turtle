@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shopping - OBJ/MTL</title>
+    <meta name="description" content="Shopping - A-Frame">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene background="color: #ECECEC" renderer="colorManagement: true;">
+      <a-assets>
+        <!-- Imagens para uso na cena -->
+        <img id="fall" src="tta.png">
+        <img id="goggles" src="goggles.png">
+        <img id="price" src="price.png">
+        <img id="shadow2" src="../../assets/img/radial-shadow-2.png">
+        
+        <!-- Áudio -->
+        <audio id="buttonSound" src="dalila.mp4" preload="auto"></audio>
+      </a-assets>
+
+      <a-entity id="model"
+                position="0 0 -3"
+                animation="property: rotation; from: 0 -30 0; to: 0 330 0; dur: 15000; easing: linear; loop: true">
+        <!-- Modelo OBJ/MTL -->
+        <a-entity obj-model="obj: url(10042_Sea_Turtle_V2_iterations-2.obj); mtl: url(10042_Sea_Turtle_V2_iterations-2.mtl);"
+                  position="-.35 0.5 .55"
+                  rotation="-90 -90 -90"
+                  scale="0.02 0.02 0.02"></a-entity>
+        <a-image src="#shadow2" rotation="-90 0 0" scale="0.5 0.5 0.5"></a-image>
+      </a-entity>
+
+      <!-- Botão 3D -->
+      <a-entity id="button"
+                geometry="primitive: box; height: 0.3; width: 0.8; depth: 0.3"
+                material="color: #4CAF50"
+                position="-2 1.7 -2.5"
+                rotation="-1.530 45 0"
+                class="interactive"
+                sound="on: click; src: #buttonSound"
+                text="value: Clique Aqui; color: #FFF; align: center; width: 4"
+                event-set__mouseenter="scale: 1.2 1.2 1.2"
+                event-set__mouseleave="scale: 1 1 1">
+      </a-entity>
+      
+      <!-- Quadro com texto (invisível inicialmente) -->
+      <a-plane id="messageBoard"
+               position="0 1.5 -2"
+               width="2"
+               height="1"
+               color="#000"
+               visible="false"
+               position="-2 1.7 -2.5"
+               rotation="-1.530 45 0">
+
+        <a-text value="Olá, eu sou a tartaruga-de-pente, eu vivo em regiões tropicais e subtropicais, 
+        em ambientes oceânicos ou costeiros e posso ser encontrada também no Espírito Santo"
+                color="#FFF"
+                align="center"
+                position="-2 1.7 -2.5"
+                rotation="-1.530 45 0">
+        </a-text>
+      </a-plane>
+
+      <a-image id="price" src="#price" width="7" height="3.5" scale="0.2 0.2 0.2"
+               animation="property: position; from: 0 2.8 -6; to: 2.25 2.8 -6; delay: 1000; dur: 1000"></a-image>
+
+      <a-cylinder id="goggles" color="#101010" height="0.02" radius="0.8"
+                  animation__rotation="property: rotation; from: -270 0 0; to: -90 0 0; dur: 750; delay: 1000"
+                  animation__position="property: position; from: 8 0 -9; to: 8 3.5 -9; dur: 750; delay: 1000">
+        <a-image src="#goggles" width="2" height="1" rotation="90 0 0" position="0 -.05 0" scale=".4 .4 .4"></a-image>
+      </a-cylinder>
+
+      <a-curvedimage id="stereoscopic-fall-collection-text" src="#fall" radius="5.7"
+                     theta-length="18" height=".45" position="0 0.9 0" scale=".6 .6 .6"
+                     animation="property: rotation; from: 0 180 0; to: 0 210 0; delay: 750; dur: 1000"></a-curvedimage>
+
+      <a-curvedimage id="shoes" src="#shoes" radius="5.7" theta-length="18" height=".8" position="0 0.9 0" scale=".4 .4 .4"
+                     animation="property: rotation; from: 0 180 0; to: 0 130 0; delay: 750; dur: 1000"></a-curvedimage>
+
+      <a-cylinder position="0 0.5 0" radius="4" height="1.6" side="back" open-ended="true" color="#FFF"></a-cylinder>
+
+      <a-entity position="0 1.6 0" look-controls camera>
+        <a-entity class="camera-cursor"
+                  raycaster="objects: .interactive"
+                  cursor
+                  geometry="primitive: circle; radius: 0.005"
+                  material="color: #283644; shader: flat"
+                  position="0 0 -0.75"></a-entity>
+      </a-entity>
+      <a-entity hand-tracking-controls="hand: left"></a-entity>
+      <a-entity hand-tracking-controls="hand: right"></a-entity>
+      <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
+      <a-light type="ambient" color="#fff"></a-light>
+    </a-scene>
+
+    <script>
+      // Função para exibir o quadro com o texto ao clicar no botão
+      document.querySelector('#button').addEventListener('click', () => {
+        console.log('Botão clicado!');  // Depuração para verificar se o clique está funcionando
+        const messageBoard = document.querySelector('#messageBoard');
+        // Reproduzir o som
+        document.querySelector('#buttonSound').play();
+        // Exibir o quadro de mensagem
+        messageBoard.setAttribute('visible', 'true');
+        setTimeout(() => {
+          // Ocultar o quadro de mensagem após 3 segundos
+          messageBoard.setAttribute('visible', 'false');
+        }, 10000); // Oculta o quadro após 3 segundos
+      });
+    </script>
+  </body>
+</html>
